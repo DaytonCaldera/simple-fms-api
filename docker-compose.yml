@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+    webapp:
+        image: ubuntu:latest
+        build:
+            context: .
+        ports:
+            - 8080:80
+        volumes:
+            - .:/var/www/html:Z
+            - vendor:/var/www/html/vendor
+            - storage:/var/www/html/storage
+    mysql:
+        image: mysql:8.0 # Use MySQL 8.0 image
+        environment:
+            MYSQL_ROOT_PASSWORD: password # Set root password
+            MYSQL_DATABASE: api # Create the database
+        ports:
+            - "3306:3306" # Map port 3306 to host
+        volumes:
+            - mysql-data:/var/lib/mysql # Persist database data
+        expose:
+            # Opens port 3306 on the container
+            - '3306'
+volumes:
+    vendor:
+    storage:
+    mysql-data:
