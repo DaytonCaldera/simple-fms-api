@@ -1,4 +1,4 @@
-FROM php:8.2-apache as php_base
+FROM  php:8.2-apache as php_base
 
 # Enable header directives
 RUN a2enmod rewrite
@@ -12,9 +12,11 @@ RUN apt-get update
 # RUN apt-get install -y gnupg2
 # RUN curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh
 # RUN bash nodesource_setup.sh
+RUN apt-get install nodejs -y
+RUN apt-get install npm -y
 RUN apt install git -y
 RUN apt install unzip -y
-# RUN apt install mariadb-server -y 
+# RUN apt install mariadb-server -y
 RUN apt install libmcrypt-dev -y
 RUN docker-php-source extract
 RUN docker-php-ext-install pdo pdo_mysql mysqli
@@ -48,3 +50,4 @@ RUN CI=true
 USER root
 
 EXPOSE 8080
+EXPOSE 5173
