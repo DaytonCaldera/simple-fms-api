@@ -6,12 +6,15 @@
     <h1 class="dashboard-container">
         <span style="align-self: flex-start !important">Dashboard</span>
         <div class="button-container">
+            @if (Auth::user()->username != 'territorios.guest')
             <button type="button" class="btn btn-success add-folder" id="add-folder-btn">
                 Agregar carpeta
             </button>
             <button type="button" class="btn btn-primary upload-file" data-toggle="modal" data-target="#modal-upload">
                 Subir archivos
             </button>
+            @endif
+            
         </div>
         
 
@@ -101,6 +104,7 @@
 @stop
 
 @section('js')
+    <script>const usuario = '@php echo Auth::user()->username; @endphp'; </script>
     <script>
         const host = '@php echo $_SERVER['APP_URL'] @endphp';
         const path = '@php echo $_GET['p'] ?? '' @endphp';
@@ -128,6 +132,7 @@
             $("#add-folder-btn").on('click',(e)=>{
                 agregarCarpeta();
             });
+
         });
 
         async function cargarTabla() {
@@ -217,8 +222,13 @@
                             }).click((e) => {
                                 descargarArchivo(item);
                             }).append($("<i class='fa fa-download'></i>"));
-                            return $("<div>").append($borrarOpc).append($editarNombreOpc).append(
+                            if(usuario == 'territorios.guest'){
+                                return $("<div>").append(
                                 $enlaceDirectoOpc).append($descargarOpc);
+                            }else{
+                                return $("<div>").append($borrarOpc).append($editarNombreOpc).append(
+                                $enlaceDirectoOpc).append($descargarOpc);
+                            }
                         }
                     }
                 ]
